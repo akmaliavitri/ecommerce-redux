@@ -13,6 +13,7 @@ const Chart = (props) => {
   const handleSubmit = (id) => {
 
     console.log(id, " id submit")
+    
     const postProduct = {
       quantity: quantity,
     };

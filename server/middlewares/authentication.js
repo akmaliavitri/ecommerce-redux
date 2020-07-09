@@ -9,8 +9,6 @@ module.exports = {
       
       if (decoded) {
         req.userData = decoded;
-        // console.log(req.headers, "role")
-        // console.log(req.headers.role, "role")
         next();
       } else {
         res.json({ ok: false, message: "User unauthenticated" });

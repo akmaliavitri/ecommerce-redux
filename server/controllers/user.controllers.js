@@ -14,6 +14,7 @@ module.exports = {
       const user = await User.create(req.body);
 
       statusMessage(res, true, "success sign up", user);
+      console.log("sukses signup", user)
     } catch (error) {
       statusMessage(res, false, error.message);
     }
@@ -44,7 +45,7 @@ module.exports = {
             id: user._id,
             token,
           };
-          
+          console.log("sukses sign in", payload)
           statusMessage(res, true, 'success sign in', payload)
         } else {
           statusMessage(res, false, "wrong email / password", null);

@@ -9,7 +9,7 @@ export const productReducer = (state = initialStore, action) => {
         ...state,
         products: action.payload,
       };
-      
+
     case "ADD_PRODUCTS":
       return {
         ...state,
@@ -30,13 +30,33 @@ export const productReducer = (state = initialStore, action) => {
         products: updatedProduct,
       };
 
-      case "DELETE_PRODUCT":
-        const newState = state.products.filter(state.products.id !== action.payload.id)
-         return {
-           ...state,
-           products: newState,
-         }
+    case "DELETE_PRODUCT":
+      const newState = state.products.filter(
+        (product) => product.id !== action.payload.id
+      );
+      // const newState = state.products.map((product) => {
+      //   if(product.id === action.payload.id) {
+      //     return product
+      //   }
+      // })
+      return {
+        ...state,
+        products: newState,
+      };
 
+    case "UPDATE_STOCK":
+      const quantityDec = state.products.map((product) => {
+        if (product.id === action.payload.id) {
+          return { ...product, stock: product.stock - action.payload.quantity };
+        } else {
+          return product;
+        }
+      });
+
+      return {
+        ...state,
+        products : quantityDec
+      }
 
     default:
       return state;

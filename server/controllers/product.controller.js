@@ -13,7 +13,7 @@ module.exports = {
         stock: data.stock,
         image_url: data.image_url,
       };
-      console.log("here newPorudt:", newProduct);
+      console.log("here add newProduct:", newProduct);
 
       const product = await Product.create(newProduct);
 
@@ -24,14 +24,13 @@ module.exports = {
   },
 
   findProduct: async (req, res) => {
-    console.log("masuk sini")
     try {
       const product = await Product.find({}).populate("user", [
         "id",
         "username",
         "email",
       ]);
-
+      console.log("here list Product:", product);
       statusMessage(res, true, "success to find product", product);
     } catch (error) {
       statusMessage(res, false, error.message);
@@ -45,7 +44,7 @@ module.exports = {
       const product = await Product.findByIdAndRemove({ _id: id }).populate(
         "user"
       );
-      console.log("ini product", product);
+      console.log("ini product yang terhapus", product);
       statusMessage(res, true, "success to delete product", product);
     } catch (error) {
       statusMessage(res, false, error.message);
@@ -60,8 +59,9 @@ module.exports = {
         $pull: req.userData.id,
       });
 
-      const findProduct = await Product.findOne({ _id: id })
+      const findProduct = await Product.findOne({ _id: id });
 
+      console.log("ini product yang berhasil di update", findProduct);
       statusMessage(res, true, "success to update product", findProduct);
       // statusMessage(res, true, "success to update product", product);
     } catch (error) {

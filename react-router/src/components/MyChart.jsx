@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import { Link, Redirect } from "react-router-dom";
 import Navbar from "./Navbar";
-import { getChart, deleteItemChart } from '../store/action/chart'
+import { getChart, deleteItemChart, decQuantity } from '../store/action/chart'
 import {useDispatch, useSelector} from 'react-redux'
 
 const MyChart = () => {
@@ -20,7 +20,7 @@ const MyChart = () => {
 
   const removeItem = (id) => {
     dispatch(deleteItemChart(id))
-    dispatch(getChart())
+    // dispatch(getChart())
   };
 
   const inCreament = async (item) => {
@@ -38,18 +38,27 @@ const MyChart = () => {
     // getItemData();
   };
 
-  const decCrement = async (item) => {
-    await Axios.put(
-      `http://localhost:4000/chart/decrement/${chartId}/update/${item.product._id}`,
-      {
-        quantity,
-      },
-      {
-        headers: { access_token: localStorage.getItem("access_token") },
-      }
-    );
-    // getItemData();
-  };
+  // const decCrement = async (item) => {
+  //   await Axios.put(
+  //     `http://localhost:4000/chart/decrement/${chartId}/update/${item.product._id}`,
+  //     {
+  //       quantity,
+  //     },
+  //     {
+  //       headers: { access_token: localStorage.getItem("access_token") },
+  //     }
+  //   );
+  //   // getItemData();
+  // };
+
+  const decCrement = (item) => {
+    let idChart = chartId
+    let itemChart = item.product.id
+    let jumlah = quantity
+    
+    dispatch(decQuantity(idChart, itemChart, jumlah))
+
+  }
 
   if (!localStorage.getItem("access_token")) {
     return <Redirect to="/signin" />;
@@ -90,7 +99,7 @@ const MyChart = () => {
                   <td colSpan="8">your chart is empty</td>
                 </tr>
               ) : (
-                myCharts.items.map((item, index) => (
+                myCharts.map((item, index) => (
                   <tr key={index}>
                     <th style={{ verticalAlign: "middle" }}>{index + 1}</th>
                     <td style={{ verticalAlign: "middle" }}>

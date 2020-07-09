@@ -40,8 +40,15 @@ module.exports = {
         { user: req.userData.id },
         { items: payload }
       );
-      console.log("ini chart", chart);
-      statusMessage(res, true, "success add item to chart", chart);
+      const findProduct = await Product.findById(id, {});
+
+      const newProductupdate = {
+        product : findProduct,
+        quantity
+      }
+
+      console.log("findProduct", findProduct);
+      statusMessage(res, true, "success add item to chart", newProductupdate);
     } catch (error) {
       statusMessage(res, false, error.message);
     }
@@ -58,7 +65,7 @@ module.exports = {
           },
         })
         .populate("user");
-        console.log(chart, "isi chart")
+      // console.log(chart, "isi get chart")
       statusMessage(res, true, "success to find product", chart);
     } catch (error) {
       statusMessage(res, false, error.message);
@@ -81,6 +88,7 @@ module.exports = {
       );
 
       statusMessage(res, true, "success delete item from chart", chart);
+      console.log("isi delete chart", chart);
     } catch (error) {
       statusMessage(res, false, error.message);
     }
@@ -113,6 +121,7 @@ module.exports = {
       );
 
       statusMessage(res, true, "success checkout item", dataChart);
+      console.log("isi checkout", dataChart);
     } catch (error) {
       statusMessage(res, false, error.message);
     }
@@ -123,10 +132,9 @@ module.exports = {
       const getChart = await Chart.findOne({ user: req.userData.id });
       const items = getChart.items;
       items.forEach(async (item) => {
-        
         await Product.update(
           { _id: item.product._id },
-          { $inc: { stock: - item.quantity } }
+          { $inc: { stock: -item.quantity } }
         );
       });
 
@@ -134,7 +142,7 @@ module.exports = {
         { user: req.userData.id },
         { items: [] }
       );
-      
+
       statusMessage(res, true, "success checkout many item");
     } catch (error) {
       statusMessage(res, false, error.message);
@@ -170,7 +178,7 @@ module.exports = {
       const { id, product } = req.params;
       const { quantity } = req.body;
 
-      console.log(quantity);
+      console.log("quantity inc", quantity);
 
       const dataChart = await Chart.updateOne(
         { _id: id, "items.product": product },
@@ -201,6 +209,7 @@ module.exports = {
         { $inc: { "items.$.quantity": -1 } }
       );
 
+      console.log("quantity dec", dataChart);
       statusMessage(
         res,
         true,

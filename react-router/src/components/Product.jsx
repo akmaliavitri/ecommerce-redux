@@ -32,11 +32,11 @@ const Product = () => {
           swal("Poof! Your data has been deleted!", {
             icon: "success",
           });
+          dispatch(getProduct());
         } else {
           swal("cancel delete data");
         }
       });
-      dispatch(getProduct());
   };
 
   if (!localStorage.getItem("access_token")) {

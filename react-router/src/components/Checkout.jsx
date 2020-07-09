@@ -1,18 +1,21 @@
 import React, { useState, Fragment } from "react";
-import { useLocation, Redirect } from "react-router-dom";
+import { useLocation, Redirect, useHistory} from "react-router-dom";
 import Navbar from "./Navbar";
 import { useDispatch } from 'react-redux'
-import { checkoutChart } from '../store/action/chart'
+import { checkoutChart, getChart} from '../store/action/chart'
 
 const CheckOut = () => {
   const { state } = useLocation();
   const item = state.item;
   const [redirect, setRedirect] = useState(false);
   const dispatch = useDispatch()
+  const history = useHistory()
 
   const checkout = (id, quantity) => {
     dispatch(checkoutChart(id, quantity))
+    dispatch(getChart())
     setRedirect(true)
+    // history.push('/myChart')
   }
 
   return (
