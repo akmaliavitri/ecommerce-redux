@@ -14,8 +14,7 @@ const CheckOut = () => {
   const checkout = (id, quantity) => {
     dispatch(checkoutChart(id, quantity))
     dispatch(getChart())
-    setRedirect(true)
-    // history.push('/myChart')
+    setRedirect(true) 
   }
 
   return (

@@ -7,6 +7,7 @@ export const getChart = () => {
       .then((response) => {
         console.log(response.data.data);
         dispatch({ type: "GET_CHART", payload: response.data.data.items });
+        dispatch({ type: "GET_ID", payload: response.data.data._id})
       })
       .catch((err) => {
         console.log(err);
@@ -52,12 +53,26 @@ export const checkoutChart = (id, quantity) => {
   };
 };
 
-export const decQuantity = (idChart, jumlah, item) => {
- return (dispatch) => {
-   axios.put(`/chart/decrement/${idChart}/update/${item}`,{data : jumlah})
+export const decQuantity = (idChart,itemProductId, quantity) => {
+  return (dispatch) => {
+   axios.put(`/chart/decrement/${idChart}/update/${itemProductId}`,{ data : quantity})
    .then((result) => {
-     console.log(result.data.data, "dec quantity")
-     dispatchEvent({type: "UPDATE_DEC", item})
+     console.log(quantity, "quantity")
+     console.log(itemProductId, "item action")
+     dispatch({type: "UPDATE_DEC", payload: { itemProductId, quantity}})
+    
+   })
+ }
+};
+
+export const InQuantity = (idChart,itemProductId, quantity) => {
+  return (dispatch) => {
+   axios.put(`/chart/increament/${idChart}/update/${itemProductId}`,{ data : quantity})
+   .then((result) => {
+     console.log(quantity, "quantity")
+     console.log(itemProductId, "item action")
+     dispatch({type: "UPDATE_IN", payload: { itemProductId, quantity}})
+    
    })
  }
 };

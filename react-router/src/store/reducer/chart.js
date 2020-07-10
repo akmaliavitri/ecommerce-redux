@@ -1,5 +1,6 @@
 const initialStore = {
   myCharts: [],
+  id: '',
 };
 
 export const chartReducer = (state = initialStore, action) => {
@@ -9,6 +10,13 @@ export const chartReducer = (state = initialStore, action) => {
         ...state,
         myCharts: action.payload,
       };
+    }
+
+    case "GET_ID" : {
+      return {
+        ...state,
+        id: action.payload
+      }
     }
 
     case "ADD_CHART":
@@ -63,8 +71,8 @@ export const chartReducer = (state = initialStore, action) => {
 
       case "UPDATE_DEC" : 
       const updateDec = state.myCharts.map((item) => {
-        if(item._id === action.item) {
-          return { ...item, quantity: item.quantity + action.item}
+        if(item._id === action.payload.itemProductId) {
+          return { ...item, quantity: action.payload.itemProductId}
         } else {
           return item
         }
@@ -74,6 +82,20 @@ export const chartReducer = (state = initialStore, action) => {
         ...state,
         myCharts: updateDec
       }
+
+      case "UPDATE_IN":
+        const updateIn = state.myCharts.map((item) => {
+          if(item._id === action.payload.itemProductId) {
+            return { ...items, quantity: action.payload.itemProductId}
+          } else {
+            return item
+          }
+        })
+
+        return {
+          ...state,
+          myCharts: updateIn
+        }
 
     default:
       return state;

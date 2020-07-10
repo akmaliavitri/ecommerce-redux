@@ -47,7 +47,7 @@ module.exports = {
         quantity
       }
 
-      console.log("findProduct", findProduct);
+      console.log("findProduct controller");
       statusMessage(res, true, "success add item to chart", newProductupdate);
     } catch (error) {
       statusMessage(res, false, error.message);
@@ -88,7 +88,7 @@ module.exports = {
       );
 
       statusMessage(res, true, "success delete item from chart", chart);
-      console.log("isi delete chart", chart);
+      console.log("isi delete chart controller");
     } catch (error) {
       statusMessage(res, false, error.message);
     }
@@ -121,7 +121,7 @@ module.exports = {
       );
 
       statusMessage(res, true, "success checkout item", dataChart);
-      console.log("isi checkout", dataChart);
+      console.log("isi checkout controller");
     } catch (error) {
       statusMessage(res, false, error.message);
     }
@@ -167,6 +167,7 @@ module.exports = {
         "success update quantity item from chart",
         dataChart
       );
+      controller
     } catch (error) {
       console.log(error);
       statusMessage(res, false, error.message);
@@ -178,7 +179,7 @@ module.exports = {
       const { id, product } = req.params;
       const { quantity } = req.body;
 
-      console.log("quantity inc", quantity);
+      // console.log("quantity inc", quantity);
 
       const dataChart = await Chart.updateOne(
         { _id: id, "items.product": product },
@@ -191,6 +192,7 @@ module.exports = {
         "success update quantity item from chart",
         dataChart
       );
+      console.log("controller increament")
     } catch (error) {
       console.log(error);
       statusMessage(res, false, error.message);
@@ -202,14 +204,14 @@ module.exports = {
       const { id, product } = req.params;
       const { quantity } = req.body;
 
-      console.log(quantity);
+      // console.log(quantity, "quantity");
 
       const dataChart = await Chart.updateOne(
         { _id: id, "items.product": product },
         { $inc: { "items.$.quantity": -1 } }
       );
 
-      console.log("quantity dec", dataChart);
+      console.log("quantity dec controller");
       statusMessage(
         res,
         true,

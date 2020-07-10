@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import { Link, Redirect } from "react-router-dom";
 import Navbar from "./Navbar";
-import { getChart, deleteItemChart, decQuantity } from '../store/action/chart'
+import { getChart, deleteItemChart, decQuantity, InQuantity } from '../store/action/chart'
 import {useDispatch, useSelector} from 'react-redux'
 
 const MyChart = () => {
@@ -12,7 +12,9 @@ const MyChart = () => {
   const [isFetching, setIsFatching] = useState(false);
 
   const dispatch = useDispatch()
-  const { myCharts } = useSelector(state => state.chartReducer)
+  const { myCharts, id } = useSelector(state => state.chartReducer)
+
+  // console.log(id, "idnya")
 
   useEffect(() => {
     dispatch(getChart())
@@ -20,23 +22,22 @@ const MyChart = () => {
 
   const removeItem = (id) => {
     dispatch(deleteItemChart(id))
-    // dispatch(getChart())
   };
 
-  const inCreament = async (item) => {
-    if (item.product.stock > 0) {
-      await Axios.put(
-        `http://localhost:4000/chart/increament/${chartId}/update/${item.product._id}`,
-        {
-          quantity,
-        },
-        {
-          headers: { access_token: localStorage.getItem("access_token") },
-        }
-      );
-    }
-    // getItemData();
-  };
+  // const inCreament = async (item) => {
+  //   if (item.product.stock > 0) {
+  //     await Axios.put(
+  //       `http://localhost:4000/chart/increament/${chartId}/update/${item.product._id}`,
+  //       {
+  //         quantity,
+  //       },
+  //       {
+  //         headers: { access_token: localStorage.getItem("access_token") },
+  //       }
+  //     );
+  //   }
+  //   // getItemData();
+  // };
 
   // const decCrement = async (item) => {
   //   await Axios.put(
@@ -52,14 +53,25 @@ const MyChart = () => {
   // };
 
   const decCrement = (item) => {
-    let idChart = chartId
-    let itemChart = item.product.id
-    let jumlah = quantity
-    
-    dispatch(decQuantity(idChart, itemChart, jumlah))
+    let idChart = id
+    let itemProductId = item.product._id
 
+    console.log(itemProductId, "itemProduct Id")
+    console.log(quantity, "quantity")
+    dispatch(decQuantity(idChart, itemProductId, quantity))
   }
 
+  const inCreament = (item) => {
+    let idChart = id
+    let itemProductId = item.product._id
+
+    console.log(itemProductId, "itemProduct Id")
+    console.log(quantity, "quantity")
+
+    dispatch(InQuantity(idChart, itemProductId, quantity))
+  }
+
+  
   if (!localStorage.getItem("access_token")) {
     return <Redirect to="/signin" />;
   }
